@@ -8,12 +8,13 @@ public class Teatro{
     char Butacas[][] = new char[5][22]; // puede que no se utilize
     double Precio[] = new double[22];
     char Estado[][] = new char[5][22]; // D => disponible, R => reservado, O => ocupado, P => pasillo.
-    //int ColNumero[] = new int[]; // nombre de la columna
-    //int FilNumero[] = new int[]; // nombre de la fila
+    int ColNumero[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,17,18,19,20,21}; // nombre de la columna
+    int FilNumero[] = {0,1,2,3,4}; // nombre de la fila
 
     System.out.print("Ingrese el precio de la platea central: ");
     plateaCentral = sc.nextInt();
     plateaLateral = plateaCentral * 0.85; // para restar el 15%
+    System.out.println("");
 
     for (i = 0; i <= 4; i++) {
       for (j = 0; j <= 21; j++) {
@@ -57,11 +58,19 @@ public class Teatro{
         System.out.print("DIGITE UNA OPCION: ");
 
         opcion = sc.nextInt();
+        System.out.println("");
 
         switch(opcion){
           case 1: // MOSTRAR BUTACAS
+            for (i=0; i<=21; i++) {
+              System.out.print("\t" + ColNumero[i]);
+            }
+            System.out.println("");
             for (i = 0; i <= 4; i++) {
               for (j = 0; j <= 21; j++){
+                if(j == 0){
+                  System.out.print(FilNumero[i] + "\t");
+                }
                 System.out.print(Estado[i][j] + "\t");
               }
               System.out.println();
@@ -80,6 +89,7 @@ public class Teatro{
           default: // MANEJO DE ERRORES
 
         } // end switch
+        System.out.println("");
     }while(opcion != 6); // end do while
 
     System.out.println("");
