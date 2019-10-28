@@ -1,5 +1,7 @@
 import java.util.*;
 
+//import jdk.internal.org.objectweb.asm.tree.VarInsnNode;
+
 public class Teatro{
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in); // para ingresar datos: variable = sc.next[TipoDeDato]();
@@ -10,6 +12,17 @@ public class Teatro{
     char Estado[][] = new char[5][22]; // D => disponible, R => reservado, O => ocupado, P => pasillo.
     int ColNumero[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22}; // nombre de la columna
     int FilNumero[] = {0,1,2,3,4}; // nombre de la fila
+    //Declaro dos variables
+
+    int filasIN;
+    int columnasIN;
+    
+    int contDisp = 0, contRes = 0, contOcu = 0;
+    double recaudacion = 0;
+    int n,f,as,tarjeta;
+            boolean valid = false;
+            char disp = 'D';
+            double subtotal = 0, pagaCon = 0,cambio = 0;
 
     System.out.print("Ingrese el precio de la platea central: ");
     plateaCentral = sc.nextInt();
@@ -78,12 +91,34 @@ public class Teatro{
             }
             break;
           case 2: // REGISTRAR RESERVACION
+
+            System.out.println(" Dijite un numero de filas del (0-4) ");
+            filasIN = sc.nextInt();
+            System.out.println(" Dijite un numero de columnas del (0-21) ");
+            columnasIN = sc.nextInt();
+
+            //En el if digo si filas es menor a 5 y las columnas es menor a 22
+
+            if(filasIN<=5 && columnasIN<=22)
+            {
+              //se valida una variable la matriz Estado [filasIN][columnasIN]
+              int ValidaButaca = Estado[filasIN][columnasIN];
+              // Si utiliza un if que diga que valida butaca es diferente igual a valida butaca D
+              if(ValidaButaca!=' ' && ValidaButaca=='D')
+              {
+                Estado[filasIN][columnasIN] = 'R'; // se le asigna a la matriz el valor R
+                System.out.println("Butaca Reservada");
+              }
+              else
+              {
+                System.out.println("No se puede Reservar porque es el pasillo");
+              }
+            }else
+            {
+              System.out.println("Butaca inexistente");
+            }
             break;
           case 3: // REGISTRAR VENTA DE BUTACAS
-            int n,f,as,tarjeta;
-            boolean valid = false;
-            char disp = 'D';
-            double subtotal = 0, pagaCon = 0,cambio = 0;
 
             System.out.println("Registro de venta de butacas");
             System.out.println();
@@ -109,7 +144,7 @@ public class Teatro{
 
 
                 for(i = as; i < (as + n); i++){
-                  if (Estado[f][i] == 'D'){
+                  if (Estado[f][i] == 'D' || Estado[f][i] == 'R'){
                     // System.out.println("Bien");
                   } else {
                     valid = false;
@@ -170,8 +205,64 @@ public class Teatro{
 
             break;
           case 4: // ANULAR VENTAS DE BUTACAS
+
+            System.out.println(" Dijite un numero de filas del (0-4) ");
+            filasIN = sc.nextInt();
+            System.out.println(" Dijite un numero de columnas del (0-21) ");
+            columnasIN = sc.nextInt();
+
+            //En el if digo si filas es menor a 5 y las columnas es menor a 22
+
+            if(filasIN<=5 && columnasIN<=22)
+            {
+              //se valida una variable la matriz Estado [filasIN][columnasIN]
+              int ValidaButaca = Estado[filasIN][columnasIN];
+              // Si utiliza un if que diga que valida butaca es diferente igual a valida butaca D
+              if(ValidaButaca!=' ' && ValidaButaca=='R')
+              {
+                Estado[filasIN][columnasIN] = 'D'; // se le asigna a la matriz el valor R
+                System.out.println("Butaca Disponible");
+              }
+              else
+              {
+                System.out.println("No se puede Modificar porque es el pasillo");
+              }
+            }else
+            {
+              System.out.println("Butaca inexistente");
+            }
             break;
           case 5: // MOSTRAR RESUMEN DE BUTACAS
+            valid = false;
+
+            for(i=0;i<= 4;i++){
+              for (j = 0; j <= 21; j++) {
+                if(Estado[i][j] == 'O'){
+                  contOcu++;
+                  recaudacion = recaudacion + Precio[j];
+                  valid = true;
+                } else if(Estado[i][j] == 'D'){
+                  contDisp++;
+                } else if(Estado[i][j] == 'R') {
+                  contRes++;
+                  valid = true;
+                }
+              }
+            }
+
+            if(valid){
+              System.out.println("El total recaudado es de: c" + recaudacion);
+              System.out.println("Butacas disponibles: " + contDisp);
+              System.out.println("Butacas reservadas: " + contRes);
+              System.out.println("Butacas ocupadas: " + contOcu);
+            } else {
+              System.out.println("Todos los asientos estan disponibles");
+            }
+            
+            recaudacion = 0;
+            contDisp = 0;
+            contRes = 0;
+            contOcu = 0;
             break;
           case 6: // SALIR
             break;
